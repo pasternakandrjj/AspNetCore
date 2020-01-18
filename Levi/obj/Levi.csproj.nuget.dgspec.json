@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\paste\\Рабочий стол\\Levi\\Levi\\Levi.csproj": {}
+    "C:\\Users\\paste\\Рабочий стол\\Levi\\AspNetCore\\Levi\\Levi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\paste\\Рабочий стол\\Levi\\Levi\\Levi.csproj": {
+    "C:\\Users\\paste\\Рабочий стол\\Levi\\AspNetCore\\Levi\\Levi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\paste\\Рабочий стол\\Levi\\Levi\\Levi.csproj",
+        "projectUniqueName": "C:\\Users\\paste\\Рабочий стол\\Levi\\AspNetCore\\Levi\\Levi.csproj",
         "projectName": "Levi",
-        "projectPath": "C:\\Users\\paste\\Рабочий стол\\Levi\\Levi\\Levi.csproj",
+        "projectPath": "C:\\Users\\paste\\Рабочий стол\\Levi\\AspNetCore\\Levi\\Levi.csproj",
         "packagesPath": "C:\\Users\\paste\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\paste\\Рабочий стол\\Levi\\Levi\\obj\\",
+        "outputPath": "C:\\Users\\paste\\Рабочий стол\\Levi\\AspNetCore\\Levi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

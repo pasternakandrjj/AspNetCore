@@ -10,6 +10,8 @@ namespace Levi.Services
     {
         List<MyTask> GetTasks();
 
+        List<MyTask> GetImportantTasks();
+
         MyTask AddTask(MyTask tasks);
 
         MyTask UpdateTask(MyTask mytask);
@@ -17,5 +19,13 @@ namespace Levi.Services
         MyTask DeleteTask(MyTask myTask);
 
         MyTask[] DeleteTasks(MyTask[] myTasks);
+
+        MyTask FindTask(MyTask myTask);
+
+        ListOfTasks CreateList(List<MyTask> myTasks, string name);
+
+        List<MyTask> GetTasksFromList(/*ListOfTasks listOfTasks*/);
+
+        ListOfTasks RenameList(ListOfTasks listOfTasks,string name);
     }
 }

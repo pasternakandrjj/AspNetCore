@@ -35,6 +35,17 @@ namespace Levi.Controllers
             return tasks;
         }
 
+        [HttpGet]
+        [Route("GetImportantTasks")]
+        public ActionResult<List<MyTask>> GetImportantTasks()
+        {
+            var tasks = _services.GetImportantTasks();
+
+            if (tasks.Count == 0)
+                return NotFound();
+            return tasks;
+        }
+
         [HttpPost]
         [Route("AddTask")]
         public ActionResult<MyTask> AddTask(MyTask myTask)
@@ -78,6 +89,51 @@ namespace Levi.Controllers
                 return NotFound();
             return task;
         }
+
+        [HttpGet]
+        [Route("FindTask")]
+        public ActionResult<MyTask> FindTask(MyTask mytask)
+        {
+            var task = _services.FindTask(mytask);
+
+            if (task == null)
+                return NotFound();
+            return task;
+        }
+
+        [HttpPost]
+        [Route("CreateList")]
+        public ActionResult<ListOfTasks> CreateList(List<MyTask> myTasks, string name)
+        {
+            var listToCreate = _services.CreateList(myTasks, name);
+
+            if (listToCreate == null)
+                return NotFound();
+            return listToCreate;
+        }
+
+        [HttpGet]
+        [Route("GetTasksFromList")]
+        public ActionResult<List<MyTask>> GetTasksFromList(/*ListOfTasks listOfTasks*/)
+        {
+            var listToGetTasks = _services.GetTasksFromList(/*listOfTasks*/);
+
+            if (listToGetTasks == null)
+                return NotFound();
+            return listToGetTasks;
+        }
+
+        [HttpPost]
+        [Route("RenameList")]
+        public ActionResult<ListOfTasks> RenameList(ListOfTasks listOfTasks, string name)
+        {
+            var listRenamed = _services.RenameList(listOfTasks, name);
+
+            if (listRenamed == null)
+                return NotFound();
+            return listRenamed;
+        }
+
 
     }
 }
