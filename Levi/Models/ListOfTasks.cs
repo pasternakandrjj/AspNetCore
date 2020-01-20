@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Levi.Models
 {
-    public class ListOfTasks
+    public class ListOfTasks : IEnumerable
     {
         public List<MyTask> myTasks { get; set; }
 
@@ -18,6 +19,11 @@ namespace Levi.Models
         {
             this.myTasks = myTasks;
             this.name = name;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return myTasks.GetEnumerator();
         }
     }
 }

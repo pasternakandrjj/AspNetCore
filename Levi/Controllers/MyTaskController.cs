@@ -132,6 +132,15 @@ namespace Levi.Controllers
             return listRenamed;
         }
 
+        [HttpGet]
+        [Route("GetSortedImportance")]
+        public ActionResult<List<MyTask>> GetSortedImportance()
+        {
+            var tasks = _services.GetSortedImportance();
 
+            if (tasks.Count == 0)
+                return NotFound();
+            return tasks;
+        }
     }
 }

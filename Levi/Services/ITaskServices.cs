@@ -12,6 +12,8 @@ namespace Levi.Services
 
         List<MyTask> GetImportantTasks();
 
+        List<MyTask> GetTodayTasks();
+
         MyTask AddTask(MyTask tasks);
 
         MyTask UpdateTask(MyTask mytask);
@@ -27,5 +29,7 @@ namespace Levi.Services
         List<MyTask> GetTasksFromList();
 
         ListOfTasks RenameList(string name);
+
+        List<MyTask> GetSortedImportance();
     }
 }

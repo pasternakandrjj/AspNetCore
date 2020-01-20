@@ -18,6 +18,7 @@ namespace Levi.Services
         private readonly List<MyTask> todayTasks = new List<MyTask>();
         private readonly ListOfTasks listOfTodayTasks;
 
+        //Users' ListOfTasks
         private readonly ListOfTasks ListOfTasks = new ListOfTasks();
 
         public TaskService()
@@ -64,11 +65,24 @@ namespace Levi.Services
             return returnNotCompleted;
         }
 
+        public List<MyTask> GetTodayTasks()
+        {
+            List<MyTask> returnNotCompleted = new List<MyTask>();
+            foreach (var item in listOfTodayTasks.myTasks)
+            {
+                if (item.DateTime.Day == DateTime.Today.Day)
+                    returnNotCompleted.Add(item);
+            }
+            return returnNotCompleted;
+        }
+
         //Change here
         public MyTask AddTask(MyTask mytask)
         {
             if (mytask.Importance == Importance.high)
                 listOfImportantTasks.myTasks.Add(mytask);
+            if (mytask.DateTime.Day == DateTime.Today.Day)
+                listOfTodayTasks.myTasks.Add(mytask);
             listOfTasks.myTasks.Add(mytask);
             return mytask;
         }
@@ -90,7 +104,7 @@ namespace Levi.Services
 
         public MyTask DeleteTask(MyTask mytask)
         {
-            MyTask taskToDelete = null; 
+            MyTask taskToDelete = null;
             foreach (var item in listOfTasks.myTasks)
             {
                 if (item.title == mytask.title)
@@ -147,6 +161,7 @@ namespace Levi.Services
         public List<MyTask> GetTasksFromList()
         {
             List<MyTask> myTasks = new List<MyTask>();
+
             foreach (var item in ListOfTasks.myTasks)
             {
                 myTasks.Add(item);
@@ -158,6 +173,12 @@ namespace Levi.Services
         {
             ListOfTasks.name = name;
             return ListOfTasks;
+        }
+
+        public List<MyTask> GetSortedImportance()
+        {
+            myTasks.Sort(new TaskComparerImportance());
+            return myTasks;
         }
     }
 }

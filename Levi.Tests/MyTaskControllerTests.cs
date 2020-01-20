@@ -143,13 +143,33 @@ namespace Levi.Tests
                     Importance = Importance.normal,
                     DateTime = DateTime.Today,
                     IsDone = false
-                } }, "null");
+                } }, "List");
 
             // Assert   
             //Assert.Equal(expected, actual);
-            //Assert.NotStrictEqual(actual, expected);
-            actual.Should().BeEquivalentTo(expected);
+            Assert.NotStrictEqual(expected, actual);
+            //actual.Should().BeEquivalentTo(expected);
         }
 
+        [Fact]
+        public async Task TaskController_ReturnSortedTasks()
+        {
+            // Arrange 
+            TaskService taskService = new TaskService();
+            MyTaskController myTaskController = new MyTaskController(taskService);
+
+            List<MyTask> expected = new List<MyTask>() {
+            new MyTask() { title = "title2", description = "description2",  Importance = Importance.low,DateTime = DateTime.Today, IsDone = true },
+            new MyTask() { title = "title1", description = "description1",  Importance = Importance.normal,DateTime = DateTime.Today, IsDone = false },
+            new MyTask() { title = "title3", description = "description3",  Importance = Importance.high,DateTime = DateTime.Today, IsDone = false }
+            };
+
+            // Act
+            var actual = myTaskController.GetSortedImportance().Value;
+
+            // Assert   
+            //Assert.Equal(expected, actual);
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }
