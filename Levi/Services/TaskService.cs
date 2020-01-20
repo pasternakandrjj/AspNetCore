@@ -10,20 +10,25 @@ namespace Levi.Services
     public class TaskService : ITaskServices
     {
         private readonly List<MyTask> myTasks;
+        private readonly ListOfTasks listOfTasks;
 
-        private List<MyTask> importantTasks = new List<MyTask>();
+        private readonly List<MyTask> importantTasks = new List<MyTask>();
+        private readonly ListOfTasks listOfImportantTasks;
 
-        private List<MyTask> todayTasks = new List<MyTask>();
+        private readonly List<MyTask> todayTasks = new List<MyTask>();
+        private readonly ListOfTasks listOfTodayTasks;
 
-        private ListOfTasks ListOfTasks = new ListOfTasks();
+        private readonly ListOfTasks ListOfTasks = new ListOfTasks();
 
         public TaskService()
         {
             this.myTasks = new List<MyTask>() {
-            new MyTask() { title = "title1", description = "description1", DateTime = DateTime.Now, Importance = Importance.normal, IsDone = false },
-            new MyTask() { title = "title2", description = "description2", DateTime = DateTime.Now, Importance = Importance.low, IsDone = true },
-            new MyTask() { title = "title3", description = "description3", DateTime = DateTime.Now, Importance = Importance.high, IsDone = false }
+            new MyTask() { title = "title1", description = "description1", Importance = Importance.normal, DateTime = DateTime.Today, IsDone = false },
+            new MyTask() { title = "title2", description = "description2",  Importance = Importance.low, DateTime = DateTime.Today, IsDone = true },
+            new MyTask() { title = "title3", description = "description3", Importance = Importance.high, DateTime = DateTime.Today, IsDone = false }
             };
+
+            this.listOfTasks = new ListOfTasks(myTasks, "listofall");
 
             foreach (var item in myTasks)
             {
@@ -32,12 +37,15 @@ namespace Levi.Services
                 if (item.DateTime == DateTime.Today)
                     todayTasks.Add(item);
             }
+
+            this.listOfImportantTasks = new ListOfTasks(importantTasks, "important");
+            this.listOfTodayTasks = new ListOfTasks(todayTasks, "today");
         }
 
         public List<MyTask> GetTasks()
         {
             List<MyTask> returnNotCompleted = new List<MyTask>();
-            foreach (var item in myTasks)
+            foreach (var item in listOfTasks.myTasks)
             {
                 if (item.IsDone == false)
                     returnNotCompleted.Add(item);
@@ -48,7 +56,7 @@ namespace Levi.Services
         public List<MyTask> GetImportantTasks()
         {
             List<MyTask> returnNotCompleted = new List<MyTask>();
-            foreach (var item in importantTasks)
+            foreach (var item in listOfImportantTasks.myTasks)
             {
                 if (item.IsDone == false)
                     returnNotCompleted.Add(item);
@@ -60,8 +68,8 @@ namespace Levi.Services
         public MyTask AddTask(MyTask mytask)
         {
             if (mytask.Importance == Importance.high)
-                importantTasks.Add(mytask);
-            myTasks.Add(mytask);
+                listOfImportantTasks.myTasks.Add(mytask);
+            listOfTasks.myTasks.Add(mytask);
             return mytask;
         }
 
@@ -69,7 +77,7 @@ namespace Levi.Services
         public MyTask UpdateTask(MyTask mytask)
         {
             MyTask taskToUpdate = null;
-            foreach (var item in myTasks)
+            foreach (var item in listOfTasks.myTasks)
             {
                 if (item.title == mytask.title)
                 {
@@ -82,16 +90,14 @@ namespace Levi.Services
 
         public MyTask DeleteTask(MyTask mytask)
         {
-            MyTask taskToDelete = null;
-
-            foreach (var item in myTasks)
+            MyTask taskToDelete = null; 
+            foreach (var item in listOfTasks.myTasks)
             {
                 if (item.title == mytask.title)
                 {
                     taskToDelete = item;
-                    myTasks.Remove(item);
-                    if (mytask.Importance == Importance.high)
-                        importantTasks.Remove(mytask);
+                    listOfTasks.myTasks.Remove(item);
+                    break;
                 }
             }
             return taskToDelete;
@@ -101,12 +107,12 @@ namespace Levi.Services
         {
             MyTask[] tasksToDelete = null;
 
-            foreach (var item in myTasks)
+            foreach (var item in listOfTasks.myTasks)
             {
                 if (myTasks.Contains(item))
                 {
                     tasksToDelete.Append<MyTask>(item);
-                    myTasks.Remove(item);
+                    listOfTasks.myTasks.Remove(item);
                 }
             }
             return tasksToDelete;
@@ -115,7 +121,7 @@ namespace Levi.Services
         public MyTask FindTask(MyTask myTask)
         {
             MyTask taskToFind = null;
-            foreach (var item in myTasks)
+            foreach (var item in listOfTasks.myTasks)
             {
                 if (item.title == myTask.title)
                     taskToFind = item;
@@ -123,23 +129,22 @@ namespace Levi.Services
             return taskToFind;
         }
 
-        //Change here ,only 1 list available
+        //Change here ,only 1 custom list available
         public ListOfTasks CreateList(List<MyTask> myTasks, string name)
         {
+            ListOfTasks.name = name;
             foreach (var item in myTasks)
             {
-                if (item.title == "")
-                { }
+                if (item.title == "") { }
                 else
                 {
                     ListOfTasks.myTasks = myTasks;
-                    ListOfTasks.name = name;
                 }
             }
             return ListOfTasks;
         }
 
-        public List<MyTask> GetTasksFromList(/*ListOfTasks listOfTasks*/)
+        public List<MyTask> GetTasksFromList()
         {
             List<MyTask> myTasks = new List<MyTask>();
             foreach (var item in ListOfTasks.myTasks)
@@ -149,10 +154,10 @@ namespace Levi.Services
             return myTasks;
         }
 
-        public ListOfTasks RenameList(ListOfTasks listOfTasks, string name)
+        public ListOfTasks RenameList(string name)
         {
-            listOfTasks.name = name;
-            return listOfTasks;
+            ListOfTasks.name = name;
+            return ListOfTasks;
         }
     }
 }

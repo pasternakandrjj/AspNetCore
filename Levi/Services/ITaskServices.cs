@@ -24,8 +24,8 @@ namespace Levi.Services
 
         ListOfTasks CreateList(List<MyTask> myTasks, string name);
 
-        List<MyTask> GetTasksFromList(/*ListOfTasks listOfTasks*/);
+        List<MyTask> GetTasksFromList();
 
-        ListOfTasks RenameList(ListOfTasks listOfTasks,string name);
+        ListOfTasks RenameList(string name);
     }
 }

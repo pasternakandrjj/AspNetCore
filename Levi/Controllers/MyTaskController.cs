@@ -16,12 +16,10 @@ namespace Levi.Controllers
     public class MyTaskController : ControllerBase
     {
         private readonly ITaskServices _services;
-        private readonly ILogger<MyTaskController> _logger;
 
-        public MyTaskController(ITaskServices services, ILogger<MyTaskController> logger)
+        public MyTaskController(ITaskServices services)
         {
             _services = services;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -125,9 +123,9 @@ namespace Levi.Controllers
 
         [HttpPost]
         [Route("RenameList")]
-        public ActionResult<ListOfTasks> RenameList(ListOfTasks listOfTasks, string name)
+        public ActionResult<ListOfTasks> RenameList(string name)
         {
-            var listRenamed = _services.RenameList(listOfTasks, name);
+            var listRenamed = _services.RenameList(name);
 
             if (listRenamed == null)
                 return NotFound();
