@@ -1,4 +1,5 @@
-﻿using Levi.Models;
+﻿using Levi.Comparers;
+using Levi.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -17,19 +18,16 @@ namespace Levi.Services
 
         private readonly List<MyTask> todayTasks = new List<MyTask>();
         private readonly ListOfTasks listOfTodayTasks;
-
-        //Users' ListOfTasks
-        private readonly ListOfTasks ListOfTasks = new ListOfTasks();
-
+         
         public TaskService()
         {
-            this.myTasks = new List<MyTask>() {
+            myTasks = new List<MyTask>() {
             new MyTask() { title = "title1", description = "description1", Importance = Importance.normal, DateTime = DateTime.Today, IsDone = false },
             new MyTask() { title = "title2", description = "description2",  Importance = Importance.low, DateTime = DateTime.Today, IsDone = true },
             new MyTask() { title = "title3", description = "description3", Importance = Importance.high, DateTime = DateTime.Today, IsDone = false }
             };
 
-            this.listOfTasks = new ListOfTasks(myTasks, "listofall");
+            listOfTasks = new ListOfTasks(myTasks, "listofall");
 
             foreach (var item in myTasks)
             {
@@ -39,8 +37,8 @@ namespace Levi.Services
                     todayTasks.Add(item);
             }
 
-            this.listOfImportantTasks = new ListOfTasks(importantTasks, "important");
-            this.listOfTodayTasks = new ListOfTasks(todayTasks, "today");
+            listOfImportantTasks = new ListOfTasks(importantTasks, "important");
+            listOfTodayTasks = new ListOfTasks(todayTasks, "today");
         }
 
         public List<MyTask> GetTasks()
@@ -75,8 +73,7 @@ namespace Levi.Services
             }
             return returnNotCompleted;
         }
-
-        //Change here
+         
         public MyTask AddTask(MyTask mytask)
         {
             if (mytask.Importance == Importance.high)
@@ -86,8 +83,7 @@ namespace Levi.Services
             listOfTasks.myTasks.Add(mytask);
             return mytask;
         }
-
-        //Change here
+         
         public MyTask UpdateTask(MyTask mytask)
         {
             MyTask taskToUpdate = null;
@@ -105,8 +101,13 @@ namespace Levi.Services
         public MyTask DeleteTask(MyTask mytask)
         {
             MyTask taskToDelete = null;
+
             foreach (var item in listOfTasks.myTasks)
             {
+                if (item.DateTime.Day == DateTime.Now.Day)
+                    listOfTodayTasks.myTasks.Remove(item);
+                if (item.Importance == Importance.high)
+                    listOfImportantTasks.myTasks.Remove(item);
                 if (item.title == mytask.title)
                 {
                     taskToDelete = item;
@@ -143,41 +144,54 @@ namespace Levi.Services
             return taskToFind;
         }
 
-        //Change here ,only 1 custom list available
         public ListOfTasks CreateList(List<MyTask> myTasks, string name)
         {
-            ListOfTasks.name = name;
-            foreach (var item in myTasks)
-            {
-                if (item.title == "") { }
-                else
-                {
-                    ListOfTasks.myTasks = myTasks;
-                }
-            }
-            return ListOfTasks;
+            return new ListOfTasks() { myTasks = myTasks, name = name };
         }
 
-        public List<MyTask> GetTasksFromList()
+        public List<MyTask> GetTasksFromList(ListOfTasks listOfTasks)
         {
             List<MyTask> myTasks = new List<MyTask>();
 
-            foreach (var item in ListOfTasks.myTasks)
-            {
+            foreach (var item in listOfTasks.myTasks)
                 myTasks.Add(item);
-            }
             return myTasks;
         }
 
-        public ListOfTasks RenameList(string name)
+        public ListOfTasks RenameList(ListOfTasks listOfTasks, string name)
         {
-            ListOfTasks.name = name;
-            return ListOfTasks;
+            listOfTasks.name = name;
+            return listOfTasks;
+        }
+
+        public ListOfTasks DeleteList(ListOfTasks listOfTasks)
+        {
+            listOfTasks.myTasks.Clear();
+            listOfTasks.name = "";
+            return listOfTasks;
         }
 
         public List<MyTask> GetSortedImportance()
         {
             myTasks.Sort(new TaskComparerImportance());
+            return myTasks;
+        }
+
+        public List<MyTask> GetSortedAplhabetically()
+        {
+            myTasks.Sort(new TaskComparerAlphabetically());
+            return myTasks;
+        }
+
+        public List<MyTask> GetSortedDate()
+        {
+            myTasks.Sort(new TaskComparerDate());
+            return myTasks;
+        }
+
+        public List<MyTask> GetSortedComplete()
+        {
+            myTasks.Sort(new TaskComparerComplete());
             return myTasks;
         }
     }

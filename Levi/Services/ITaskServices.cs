@@ -26,10 +26,18 @@ namespace Levi.Services
 
         ListOfTasks CreateList(List<MyTask> myTasks, string name);
 
-        List<MyTask> GetTasksFromList();
+        List<MyTask> GetTasksFromList(ListOfTasks listOfTasks);
 
-        ListOfTasks RenameList(string name);
+        ListOfTasks RenameList(ListOfTasks listOfTasks,string name);
+
+        ListOfTasks DeleteList(ListOfTasks listOfTasks);
 
         List<MyTask> GetSortedImportance();
+
+        List<MyTask> GetSortedAplhabetically();
+
+        List<MyTask> GetSortedDate();
+
+        List<MyTask> GetSortedComplete();
     }
 }

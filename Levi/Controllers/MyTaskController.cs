@@ -112,9 +112,9 @@ namespace Levi.Controllers
 
         [HttpGet]
         [Route("GetTasksFromList")]
-        public ActionResult<List<MyTask>> GetTasksFromList(/*ListOfTasks listOfTasks*/)
+        public ActionResult<List<MyTask>> GetTasksFromList(ListOfTasks listOfTasks)
         {
-            var listToGetTasks = _services.GetTasksFromList(/*listOfTasks*/);
+            var listToGetTasks = _services.GetTasksFromList(listOfTasks);
 
             if (listToGetTasks == null)
                 return NotFound();
@@ -123,13 +123,24 @@ namespace Levi.Controllers
 
         [HttpPost]
         [Route("RenameList")]
-        public ActionResult<ListOfTasks> RenameList(string name)
+        public ActionResult<ListOfTasks> RenameList(ListOfTasks listOfTasks, string name)
         {
-            var listRenamed = _services.RenameList(name);
+            var listRenamed = _services.RenameList(listOfTasks, name);
 
             if (listRenamed == null)
                 return NotFound();
             return listRenamed;
+        }
+
+        [HttpPost]
+        [Route("DeleteList")]
+        public ActionResult<ListOfTasks> DeleteList(ListOfTasks listOfTasks)
+        {
+            var listDeleted = _services.DeleteList(listOfTasks);
+
+            if (listDeleted == null)
+                return NotFound();
+            return listDeleted;
         }
 
         [HttpGet]
@@ -137,6 +148,39 @@ namespace Levi.Controllers
         public ActionResult<List<MyTask>> GetSortedImportance()
         {
             var tasks = _services.GetSortedImportance();
+
+            if (tasks.Count == 0)
+                return NotFound();
+            return tasks;
+        }
+
+        [HttpGet]
+        [Route("GetSortedDate")]
+        public ActionResult<List<MyTask>> GetSortedDate()
+        {
+            var tasks = _services.GetSortedDate();
+
+            if (tasks.Count == 0)
+                return NotFound();
+            return tasks;
+        }
+
+        [HttpGet]
+        [Route("GetSortedAlphabetically")]
+        public ActionResult<List<MyTask>> GetSortedAlphabetically()
+        {
+            var tasks = _services.GetSortedAplhabetically();
+
+            if (tasks.Count == 0)
+                return NotFound();
+            return tasks;
+        }
+
+        [HttpGet]
+        [Route("GetSortedComplete")]
+        public ActionResult<List<MyTask>> GetSortedComplete()
+        {
+            var tasks = _services.GetSortedComplete();
 
             if (tasks.Count == 0)
                 return NotFound();
